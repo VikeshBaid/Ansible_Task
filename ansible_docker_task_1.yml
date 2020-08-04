@@ -1,14 +1,21 @@
+<<<<<<< HEAD
 - name: Ansible-Docker-Webserver
   hosts: httpd_configuration
   tasks:
     - name: Yum repository for docker
       yum_repository:
+=======
+- hosts: httpd_configuration
+  tasks:
+    - yum_repository:
+>>>>>>> 08ca04dfca5e00c88dd874c0b02dd1b741b89ee6
         name: docker
         baseurl: https://download.docker.com/linux/centos/7/x86_64/stable
         description: docker repo
         gpgcheck: no
         enabled: yes
         state: present
+<<<<<<< HEAD
     - name: installing docker
       package:
         name: docker-ce-18.09.1-3.el7.x86_64
@@ -34,6 +41,26 @@
         source: pull
     - name: launching docker container 
       docker_container:
+=======
+    - package:
+        name: docker-ce-18.09.1-3.el7.x86_64
+        state: present
+    - service:
+        name: docker
+        state: started
+        enabled: yes
+    - command: pip3 install docker
+    - file:
+        path: /webserver
+        state: directory
+    - copy:
+        src: /root/home.html
+        dest: /webserver
+    - docker_image:
+        name: httpd
+        source: pull
+    - docker_container:
+>>>>>>> 08ca04dfca5e00c88dd874c0b02dd1b741b89ee6
         name: Webserver
         image: httpd:latest
         pull: yes
