@@ -1,6 +1,6 @@
-#Task 2: Launch an EC2 Instance using Ansible and use IP Address to setup a httpd server
+# Task 2: Launch an EC2 Instance using Ansible and use IP Address to setup a httpd server
 
-##Modules Used:
+## Modules Used:
 
 1. "ec2_instance" module: to launch the EC2 Instance. [Docs Link](https://docs.ansible.com/ansible/latest/modules/ec2_instance_module.html) 
 2. "package" module: To install httpd package. [Docs Link](https://docs.ansible.com/ansible/latest/modules/package_module.html)
