@@ -1,0 +1,54 @@
+- name: Launching EC2 instance
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+          - secret.yml
+  tasks:
+          - ec2_instance:
+                  aws_access_key: "{{ user_name }}"
+                  aws_secret_key: "{{ password }}"
+                  name: "test_instance"
+                  image_id: "ami-0810abbfb78d37cdf"
+                  instance_type: "t2.micro"
+                  vpc_subnet_id: "subnet-ed84778b"
+                  security_group: "launch-wizard-7"
+                  network:
+                          assign_public_ip: true
+                  key_name: "recovery_key"
+                  region: "ap-southeast-2"
+                  tags:
+                          Name: "ani_ec2_create"
+            register: x
+
+          - name: adding host
+            add_host:
+                    hostname: '{{ x.instances[0].public_ip_address }}'
+                    groups: ec2_host
+
+
+
+- name: Changes in EC2 instance
+  hosts: ec2_host
+  become: true
+  gather_facts: false
+  tasks:
+          - name: test ssh conneciton
+            wait_for_connection:
+
+          - name: launching httpd server
+            package:
+                    name: httpd
+                    state: present
+
+          - name: configure httpd
+            copy:
+                    dest: "/var/www/html/ec2.html"
+                    src: "/root/home.html"
+
+          - name: starting the httpd service
+            service:
+                    name: httpd
+                    state: started
+                    enabled: yes
+
+
